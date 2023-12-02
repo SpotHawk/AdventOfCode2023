@@ -5,50 +5,52 @@
 
 using namespace std;
 
-void readInput(vector<string>* inputs);
-int calculate(vector<string>* inputs);
+void readInput(vector<string>* input);
+int calculate(vector<string>* input);
 
 int main() {
-    vector<string> inputs;
+    vector<string> input;
 
-    readInput(&inputs);
-    cout << calculate(&inputs) << endl;
+    readInput(&input);
+    cout << calculate(&input) << endl;
 
     return 0;
 }
 
-void readInput(vector<string>* inputs) {
+void readInput(vector<string>* input) {
     ifstream file("../input.txt");
     string line;
 
     while(getline(file, line)) {
-        inputs->push_back(line);
+        input->push_back(line);
     }
     
-    inputs->shrink_to_fit();
+    input->shrink_to_fit();
 }
 
-int calculate(vector<string>* inputs) {
+int calculate(vector<string>* input) {
     int firstDigit, lastDigit;
     int sum = 0;
 
     int i = 0;
     int j;
-    while(i < (int)inputs->size()) {
+    while(i < (int)input->size()) {
         firstDigit = -1;
         lastDigit = -1;
         
         j = 0;
-        while (j < (int)(*inputs)[i].length()) {
-            if (isdigit((*inputs)[i][j])) {
-                if (firstDigit == -1) {
-                    firstDigit = static_cast<int>((*inputs)[i][j] - '0');
-                    lastDigit = static_cast<int>((*inputs)[i][j] - '0');
-                } else {
-                    lastDigit = static_cast<int>((*inputs)[i][j] - '0');
-                }
+        while (j < (int)(*input)[i].length() && firstDigit == -1) {
+            if (isdigit((*input)[i][j])) {
+                    firstDigit = static_cast<int>((*input)[i][j] - '0');
             }
             j++;
+        }
+        j = (int)(*input)[i].length();
+        while (j >= 0 && lastDigit == -1) {
+            if (isdigit((*input)[i][j])) {
+                    lastDigit = static_cast<int>((*input)[i][j] - '0');
+            }
+            j--;
         }
 
         sum += (firstDigit * 10 + lastDigit);
@@ -57,4 +59,3 @@ int calculate(vector<string>* inputs) {
 
     return sum;
 }
-
